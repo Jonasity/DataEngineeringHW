@@ -40,7 +40,7 @@ def Map(source,key,joinsource="",key2="",value=""):
     if not path.exists("inter"): 
         makedirs("inter")
     joinpair = []
-    if joinsource != "": #If optional args given to join with other dataset based on primary key
+    if joinsource != "": #If optional args are given, creates primary key array for joining
         dataset2 = [f for f in listdir(joinsource)]
         for data in dataset2:
             file = open(joinsource+"/"+data)
