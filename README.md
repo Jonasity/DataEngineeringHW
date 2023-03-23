@@ -2,4 +2,6 @@
 Python project, python must be installed with a compatible IDE.
 Developed and tested using Visual Studio Code  
 Run with:
-py MapReduceFramework.py
+python test.py   
+Running this command will call the functions with the necessary inputs to complete tasks 1 and 2   
+The solution is not hardcoded, so technically speaking, any files where the purpose is to count occurence of unique values is possible to run through this framework
