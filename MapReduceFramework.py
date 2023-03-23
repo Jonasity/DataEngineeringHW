@@ -1,27 +1,7 @@
 #MapReduce Framework
-""" Pseudo code
-Map()
-    List all files in given dataset directory
-    (Maybe separate each file to a different thread for the function)
-    parse through files creating intermediate key value pairs
-    ouput results to intermediate files
-
-Reduce()
-    Parse through all intermediate files
-    Sort all intermediate pairs bto single file
-
-
-Need to consider how to join
-    - clicks that belong to country=LT
-    - we have table of country and ID
-    - map id and country?
-Perhaps write a separate function called Join that will take two datasets/files as input and combine them based
-on a primary key, removing any rows that don't fit, then user calls Join, and then MapReduce
-
-Another idea, define another function in MapThread class, which instead of default taking count of objects, will take a second key to collect those records matching a key
-      """
 import csv,time,threading
 from os import listdir,remove,path,makedirs
+
 class MapThread (threading.Thread):
     def __init__(self, threadID, name, source, data, key, joinpair):
         threading.Thread.__init__(self)
@@ -32,7 +12,7 @@ class MapThread (threading.Thread):
         self.key = key
         self.joinpair = joinpair
 
-    def run(self):
+    def run(self): #Defines the generic count map function
         print("Starting " + self.name)
         file = open(self.source+"/"+self.data)
         read = csv.reader(file)
@@ -43,7 +23,7 @@ class MapThread (threading.Thread):
             if row[index] in pairs:
                 pairs[row[index]] += 1
             else:
-                if not self.joinpair:
+                if not self.joinpair: #Checks if join active
                     pairs.update({row[index]: 1})
                 else:
                     if row[index] in self.joinpair:
@@ -56,14 +36,14 @@ class MapThread (threading.Thread):
         return
 
 #Map
-def Map(source,key,source2="",key2="",value=""):
+def Map(source,key,joinsource="",key2="",value=""):
     if not path.exists("inter"): 
         makedirs("inter")
     joinpair = []
-    if source2 != "":
-        dataset2 = [f for f in listdir(source2)]
+    if joinsource != "": #If optional args given to join with other dataset based on primary key
+        dataset2 = [f for f in listdir(joinsource)]
         for data in dataset2:
-            file = open(source2+"/"+data)
+            file = open(joinsource+"/"+data)
             read = csv.reader(file)
             index = next(read).index('{}'.format(key2))
             for row in read:
@@ -100,7 +80,7 @@ def Reduce(key,output):
         file.close
     out = open(output + ".csv", "w")
     out.write("%s,count\n" % (key))
-    for k in finalpairs.keys():
+    for k in finalpairs.keys(): #Print all values from dictionary into csv format
         out.write("%s,%s\n" % (k,finalpairs[k]))
     out.close
     print("Output complete")
