@@ -1,4 +1,4 @@
-# Data Engineering HW
+# Data Engineering HW OUTDATED
 My solution to the Vinted Engineering Academy Data Engineering homework   
 
 This is a python project, python must be installed with a compatible IDE.
