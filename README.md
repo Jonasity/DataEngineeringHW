@@ -11,4 +11,4 @@ Running this command will call the functions with the necessary inputs to comple
 
 The MapReduce framework is located, fittingly, in the MapReduceFramework.py file.  
 The solution is not hardcoded, so any csv files where the purpose is to count occurence of unique values would find success in this framework. 
-The reason I solved it in this way first is that I have had no experience with higher order functions.
+A quick and dirty solution incase I did not finish a more sophisticated one.
